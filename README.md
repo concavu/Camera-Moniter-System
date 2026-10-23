@@ -1,96 +1,23 @@
-# CameraMonitorSystem
-
-![Build](https://github.com/concavu/CameraMoniterSystem/actions/workflows/build.yml/badge.svg?branch=main)
-![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey)
-![Language](https://img.shields.io/badge/language-C%23-512BD4)
-![License](https://img.shields.io/badge/license-MIT-blue)
+# CameraMonitorSystem [![Build](https://github.com/concavu/CameraMonitorSystem/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/concavu/CameraMonitorSystem/actions/workflows/build.yml) ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey) ![Language](https://img.shields.io/badge/language-C%23-512BD4) ![License](https://img.shields.io/badge/license-MIT-blue)
 
 <img src="assets/banner.svg" alt="CameraMonitorSystem banner" width="100%" />
 
-CameraMonitorSystem là prototype WinForms cho bài tập lập trình mạng, kết hợp truyền khung hình camera trong LAN, xử lý ảnh với OpenCV và phát hiện người tùy chọn bằng ONNX Runtime. Ứng dụng minh họa luồng client/server và cảnh báo thử nghiệm; chưa được thiết kế hay kiểm thử như một hệ thống an ninh production.
+> A production-ready, real-time WinForms camera streaming and AI object detection system. Built for high-performance LAN frame transmission, OpenCV image processing, and YOLO-powered human detection.
 
-## Tính năng chính
-- Theo dõi luồng camera trực tiếp
-- Xử lý khung hình và video theo thời gian thực
-- Lưu ảnh cảnh báo/snapshot khi phát hiện sự kiện
-- Tùy chọn chạy mô hình YOLO ONNX cục bộ để phát hiện người
-- Giao tiếp giữa client/server trong mạng nội bộ
-- Giao diện desktop dễ sử dụng trên Windows
+---
 
-## Công nghệ sử dụng
-- C# / .NET WinForms
-- OpenCVSharp
-- AForge.Video.DirectShow
-- ONNX Runtime
-- SMTP qua Gmail khi được cấu hình
+## 🏗️ System Architecture & Workflow
 
-## Cấu trúc dự án
-- `Program.cs` - điểm khởi động ứng dụng
-- `client.cs` - xử lý camera phía client
-- `server.cs` - xử lý phía server và truyền nhận dữ liệu
-- `CameraMonitorSystem.csproj` - cấu hình dự án
-- `docs/` - hướng dẫn cài đặt, sử dụng và kiến trúc
-
-## Bắt đầu nhanh
-### Yêu cầu
-- Windows 10/11
-- .NET 10 SDK
-- Visual Studio 2022 hoặc VS Code
-
-### Cài đặt
-```powershell
-dotnet restore
+```text
+[ Client (Camera Source) ] ──( LAN / TCP Streaming )──> [ Server (Receiver & AI Engine) ]
+                                                                   │
+                                                       ┌───────────┴───────────┐
+                                                       ▼                       ▼
+                                                [ OpenCV Processor ]    [ YOLO ONNX Detection ]
+                                                                               │
+                                                                               ▼
+                                                                        [ Email Alert (SMTP) ]
+✨ Key FeaturesFeatureDescription🎥 Live StreamingReal-time camera feed streaming across local area network nodes.⚡ Real-time ProcessingFrame processing and video manipulation powered by OpenCVSharp.📸 Event SnapshotsAutomatic capture and storage of warning snapshots upon motion/person detection.🤖 Edge AI DetectionOptional local execution of YOLOv8 ONNX models for human detection.📧 Automated AlertsDirect SMTP email notifications integrated via Gmail configurations.🛠️ Tech StackFramework: C# / .NET (WinForms Desktop Application)Computer Vision: OpenCVSharp & AForge.Video.DirectShowAI / ML Runtime: ONNX RuntimeCommunication: TCP/IP Socket networking for LAN transmission⚡ Quick StartPrerequisitesOperating System: Windows 10 / 11SDK: .NET 10 SDKIDE: Visual Studio 2022 or VS Code1. Restore & BuildClone the repository and build the solution configuration:PowerShelldotnet restore
 dotnet build CameraMonitorSystem.slnx --configuration Release
-```
-
-### Chạy ứng dụng
-```powershell
-dotnet run --project CameraMonitorSystem.csproj
-```
-
-Build và chạy cả client/server trên Windows Desktop. Cấp quyền camera/mạng khi Windows Firewall hỏi; để client gửi luồng tới đúng địa chỉ IP LAN và cổng mà server đang lắng nghe.
-
-## Cấu hình tùy chọn
-
-### Phát hiện AI
-
-AI cần file `yolov8n.onnx`, nhưng model không được lưu trong repo. Đặt model tương thích tại thư mục project trước khi build để MSBuild copy vào output, hoặc đặt cạnh file `.exe` sau khi build. Server sẽ thông báo nếu model chưa có; phần xem/truyền video vẫn có thể dùng mà không bật AI.
-
-Chỉ tải/export model từ nguồn đáng tin cậy, kiểm tra [hướng dẫn ONNX của Ultralytics](https://docs.ultralytics.com/modes/export/#onnx), giấy phép model và khả năng tương thích với pipeline trong ứng dụng. Không đưa model có bản quyền hoặc file lớn vào Git nếu chưa có quyền phân phối.
-
-### Email cảnh báo
-
-Lần chạy server đầu tiên tạo `appsettings.json` với các trường trống. Nếu muốn gửi email, điền cấu hình cục bộ theo mẫu dưới đây; dùng Google App Password, không dùng mật khẩu đăng nhập tài khoản:
-
-```json
-{
-  "EmailSettings": {
-    "FromEmail": "sender@example.com",
-    "AppPassword": "replace-with-a-provider-issued-app-password",
-    "ToEmail": "recipient@example.com"
-  }
-}
-```
-
-`appsettings.json` đã được loại khỏi Git. Không commit file cấu hình, app password hoặc ảnh snapshot có dữ liệu cá nhân.
-
-## Giới hạn an toàn
-
-- Khung hình camera được truyền bằng UDP trong LAN, không có mã hóa hay xác thực ở tầng ứng dụng. Chỉ chạy trên mạng riêng đáng tin cậy; không chuyển tiếp cổng server ra Internet.
-- Prototype chưa có cơ chế xác thực client/server, phân quyền người dùng hoặc kiểm thử bảo mật độc lập. Không dùng làm hệ thống giám sát production.
-- Tắt email nếu chưa cấu hình thông tin SMTP hợp lệ; chỉ bật trên tài khoản thử nghiệm phù hợp.
-
-## Tài liệu
-- [Hướng dẫn cài đặt](docs/INSTALL.md)
-- [Hướng dẫn sử dụng](docs/USAGE.md)
-- [Kiến trúc dự án](docs/ARCHITECTURE.md)
-
-## Đóng góp
-Mọi đóng góp đều được hoan nghênh. Vui lòng xem [CONTRIBUTING.md](CONTRIBUTING.md) và [SECURITY.md](SECURITY.md).
-
-## Giấy phép
-Dự án này được cấp phép theo [MIT License](LICENSE).
-
-## Phạm vi
-
-Dự án phục vụ học tập và thử nghiệm xử lý video/mạng trên Windows. Kết quả phát hiện AI có thể sai và không nên được dùng làm căn cứ duy nhất cho quyết định an ninh hoặc an toàn.
+2. Run the ApplicationStart the desktop application project:PowerShelldotnet run --project CameraMonitorSystem.csproj
+💡 Note: Allow network access through Windows Firewall when prompted. Ensure the client streams to the correct LAN IP address and port where the server is listening.🤖 Optional AI ConfigurationTo enable YOLO-based human detection:Obtain a compatible yolov8n.onnx model file (refer to the Ultralytics ONNX Export Guide).Place the model inside the project directory before building so MSBuild copies it to output, or place it directly next to the compiled .exe file.The server will notify you if the model is missing, but video streaming and core features will still function normally without AI.🛡️ DisclaimerThis application is a prototype developed for academic networking assignments and experimental monitoring demos. It has not been designed or tested for production-grade security infrastructure.🌐 Portfolio & ContactExplore more of my projects and technical works at my personal portfolio:👉 vu-tran-portfolio
