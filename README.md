@@ -17,7 +17,85 @@
                                                                                │
                                                                                ▼
                                                                         [ Email Alert (SMTP) ]
-✨ Key FeaturesFeatureDescription🎥 Live StreamingReal-time camera feed streaming across local area network nodes.⚡ Real-time ProcessingFrame processing and video manipulation powered by OpenCVSharp.📸 Event SnapshotsAutomatic capture and storage of warning snapshots upon motion/person detection.🤖 Edge AI DetectionOptional local execution of YOLOv8 ONNX models for human detection.📧 Automated AlertsDirect SMTP email notifications integrated via Gmail configurations.🛠️ Tech StackFramework: C# / .NET (WinForms Desktop Application)Computer Vision: OpenCVSharp & AForge.Video.DirectShowAI / ML Runtime: ONNX RuntimeCommunication: TCP/IP Socket networking for LAN transmission⚡ Quick StartPrerequisitesOperating System: Windows 10 / 11SDK: .NET 10 SDKIDE: Visual Studio 2022 or VS Code1. Restore & BuildClone the repository and build the solution configuration:PowerShelldotnet restore
+
+```
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+| --- | --- |
+| **🎥 Live Streaming** | Real-time camera feed streaming across local area network nodes. |
+| **⚡ Real-time Processing** | Frame processing and video manipulation powered by OpenCVSharp. |
+| **📸 Event Snapshots** | Automatic capture and storage of warning snapshots upon motion/person detection. |
+| **🤖 Edge AI Detection** | Optional local execution of YOLOv8 ONNX models for human detection. |
+| **📧 Automated Alerts** | Direct SMTP email notifications integrated via Gmail configurations. |
+
+---
+
+## 🛠️ Tech Stack
+
+* **Framework:** C# / .NET (WinForms Desktop Application)
+* **Computer Vision:** OpenCVSharp & AForge.Video.DirectShow
+* **AI / ML Runtime:** ONNX Runtime
+* **Communication:** TCP/IP Socket networking for LAN transmission
+
+---
+
+## ⚡ Quick Start
+
+### Prerequisites
+
+* **Operating System:** Windows 10 / 11
+* **SDK:** [.NET 10 SDK](https://dotnet.microsoft.com/)
+* **IDE:** Visual Studio 2022 or VS Code
+
+### 1. Restore & Build
+
+Clone the repository and build the solution configuration:
+
+```powershell
+dotnet restore
 dotnet build CameraMonitorSystem.slnx --configuration Release
-2. Run the ApplicationStart the desktop application project:PowerShelldotnet run --project CameraMonitorSystem.csproj
-💡 Note: Allow network access through Windows Firewall when prompted. Ensure the client streams to the correct LAN IP address and port where the server is listening.🤖 Optional AI ConfigurationTo enable YOLO-based human detection:Obtain a compatible yolov8n.onnx model file (refer to the Ultralytics ONNX Export Guide).Place the model inside the project directory before building so MSBuild copies it to output, or place it directly next to the compiled .exe file.The server will notify you if the model is missing, but video streaming and core features will still function normally without AI.🛡️ DisclaimerThis application is a prototype developed for academic networking assignments and experimental monitoring demos. It has not been designed or tested for production-grade security infrastructure.🌐 Portfolio & ContactExplore more of my projects and technical works at my personal portfolio:👉 vu-tran-portfolio
+
+```
+
+### 2. Run the Application
+
+Start the desktop application project:
+
+```powershell
+dotnet run --project CameraMonitorSystem.csproj
+
+```
+
+> 💡 *Note: Allow network access through Windows Firewall when prompted. Ensure the client streams to the correct LAN IP address and port where the server is listening.*
+
+---
+
+## 🤖 Optional AI Configuration
+
+To enable YOLO-based human detection:
+
+1. Obtain a compatible `yolov8n.onnx` model file (refer to the Ultralytics ONNX Export Guide).
+2. Place the model inside the project directory before building so MSBuild copies it to output, or place it directly next to the compiled `.exe` file.
+3. *The server will notify you if the model is missing, but video streaming and core features will still function normally without AI.*
+
+---
+
+## 🛡️ Disclaimer
+
+This application is a prototype developed for academic networking assignments and experimental monitoring demos. It has not been designed or tested for production-grade security infrastructure.
+
+---
+
+## 🌐 Portfolio & Contact
+
+Explore more of my projects and technical works at my personal portfolio:
+
+👉 vu-tran-portfolio
+
+```
+
+```
